@@ -59,7 +59,17 @@ end
 
 function Profile:load()
  --     print("LOADING Profile Manager")  -- DEBUG_TAG
-    local homedir = os.getenv("HOME")
+ local homedir
+    if os.getenv("HOME") then
+        homedir = os.getenv("HOME")
+    elseif os.getenv("USERPROFILE") then
+        homedir = os.getenv("USERPROFILE")
+    else
+        -- Handle the case when neither "HOME" nor "USERPROFILE" is set
+        -- You can set a default directory or handle the error as needed
+        print("Error: Unable to determine the home directory.")
+        return
+    end
     -- Load username
     self.username, self.loggedIn = loadUsername(homedir)
     -- Values stored in the Löve file ---
